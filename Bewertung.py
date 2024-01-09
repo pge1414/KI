@@ -27,6 +27,15 @@ top_k_abstände = []
 
 print(max([abstände[1] for abstände in list(filter(lambda x: x[0]<=k, abstände))], key=list(filter(lambda x: x[0]<=k, abstände)).count))
 
+datensatz_transponiert = list(zip(*datensatz))
+maxi = [max(datensatz_transponiert[0]), max(datensatz_transponiert[1]), max(datensatz_transponiert[2]), max(datensatz_transponiert[3])]
+superd = []
+print(maxi)
+for i in range(len(datensatz)):
+    for j in range(len(datensatz[i])-1):
+        datensatz[i][j] /= maxi[j]
+print(datensatz)
+
 # for i in abstände:
 #     if i[0] <= k:
 #         top_k_abstände.append(i)

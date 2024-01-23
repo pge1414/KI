@@ -29,7 +29,7 @@ vorhersage = max([abstände[1] for abstände in list(filter(lambda x: x[0]<=k, a
 
 k_value = 0.0
 for i in range(149):
-    if max([abstände[1] for abstände in list(filter(lambda x: x[1]<=k, abstände))], key=list(filter(lambda x: x[0]<=k, abstände)).count) == datensatz[i][4]:
+    if max([abstände[1] for abstände in list(filter(lambda x: x[0]<=k, abstände))], key=list(filter(lambda x: x[0]<=k, abstände)).count) == datensatz[i][4]:
         k_value += 1
 print(k_value/len(abstände))
 

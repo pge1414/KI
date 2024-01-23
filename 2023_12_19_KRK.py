@@ -1,7 +1,4 @@
-# Idee
-# Es entscheiden nun nicht mehr die k nächsten Nachbarn, sondern alle, die in einem bestimmten Radius zur Eingabe liegen
-
-import csv, math, random
+import csv, math, random, tqdm
 
 # https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data
 
@@ -18,8 +15,15 @@ with open("iris.csv") as f:
         datensatz.append([float(wert) for wert in zeile[:-1]] + [zeile[-1]])
 #print(datensatz)
         
-def krk(zeile, gesamt):
-    pass
+def krk(zeile : list, gesamt : list):
+    primelist = []
+    k = 0.5
+    if abstand(zeile, gesamt) <= k:
+        primelist.append(gesamt[4])
+    return max(primelist.count("Iris-versicolor"), primelist.count("Iris-virginica"), primelist.count("Iris-setosa"))
+
+# def krk(testdatenzeile,trainingsdaten, k):
+#     abstände = []
 
 
 datensatz_transponiert = list(zip(*datensatz)) # ???
@@ -40,6 +44,9 @@ def validierung(p: float) -> float:
             treffer += 1
     
     return treffer / len(testdaten)
+
+for k in tqdm.tqdm(range(10000)):
+    print(validierung(0.2))
 
 # test_datensatz = datensatz[:1]
 

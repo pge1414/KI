@@ -117,25 +117,25 @@ def k_optimierung(n: int):
 #     all_list.append(float(sum_p)/float(m))
 #     return all_list
 
-# print(gewichte_optimizer([1,2,3,4,5, 6, 7, 8, 9], [1,2,3,4,5, 6, 7, 8, 9],[1,2,3,4,5, 6, 7, 8, 9],[1,2,3,4,5, 6, 7, 8, 9]))
-g_2_opt = 0
-g_3_opt = 0
-d_opt = 0
-for g_2 in range(1, 10, 2):
-    for g_3 in range(1, 10, 2):
-        for i in range(len(datensatz)):
-            datensatz[i][0] *= 1
-            datensatz[i][1] *= 1
-            datensatz[i][2] *= g_2
-            datensatz[i][3] *= g_3
-        d = k_optimierung(25)
-        for i in range(len(datensatz)):
-            datensatz[i][0] /= 1
-            datensatz[i][1] /= 1
-            datensatz[i][2] /= g_2
-            datensatz[i][3] /= g_3
-        if d[3] > d_opt:
-            d_opt = d[3]
-            g_2_opt = g_2
-            g_3_opt = g_3
-print(d_opt, g_2_opt, g_3_opt)
+print(gewichte_optimizer([40, 0.2, 1],[40, 0.2, 1],[40, 0.2, 1],[40, 0.2, 1] ))
+# g_2_opt = 0
+# g_3_opt = 0
+# d_opt = 0
+# for g_2 in range(1, 10, 2):
+#     for g_3 in range(1, 10, 2):
+#         for i in range(len(datensatz)):
+#             datensatz[i][0] *= 1
+#             datensatz[i][1] *= 1
+#             datensatz[i][2] *= g_2
+#             datensatz[i][3] *= g_3
+#         d = k_optimierung(25)
+#         for i in range(len(datensatz)):
+#             datensatz[i][0] /= 1
+#             datensatz[i][1] /= 1
+#             datensatz[i][2] /= g_2
+#             datensatz[i][3] /= g_3
+#         if d[3] > d_opt:
+#             d_opt = d[3]
+#             g_2_opt = g_2
+#             g_3_opt = g_3
+# print(d_opt, g_2_opt, g_3_opt)

@@ -1,0 +1,30 @@
+import threading, time
+
+def aufsteigend_sortiert(liste, von, bis):
+    liste = liste[von:bis].sort()
+
+def aufsteigend_sortiert_multithreading(liste, k):
+    threads = []
+
+    for i in range(k):
+        t= threading.Thread(target=aufsteigend_sortiert, args= [liste, len(liste) // k * i, len(liste) // k * (i + 1)])
+        threads.append(t)
+        t.start()
+
+    for i in range(k):
+        threads[i].join()
+
+    liste.sort()
+
+test = []
+
+for i in range(100000000):
+    test.append(-i)
+
+start = time.time()
+print(aufsteigend_sortiert_multithreading(test,4))
+print(time.time()-start)
+
+start2 = time.time()
+print(test.sort())
+print(time.time()-start2)

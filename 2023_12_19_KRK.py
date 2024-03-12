@@ -1,10 +1,10 @@
 
 import csv, math, random, tqdm, matplotlib.pyplot as plt, threading
 
-def abstand(zeile1, zeile2):
+def abstand(zeile1, zeile2, gewichte):
     n = 0
     for i in range(len(zeile1)):
-        n += (zeile1[i] - zeile2[i]) ** 2
+        n += (zeile1[i] * gewichte[i] - zeile2[i] * gewichte[i]) ** 2
     return math.sqrt(n)
 
 def gewichtungen(datensatz, g1, g2, g3, g4): 
@@ -36,6 +36,10 @@ def gewichte_optimizer(gewichte_0, gewichte_1, gewichte_2,gewichte_3):
                         g_4_opt = g_3
     return d_opt, g_0_opt, g_1_opt, g_3_opt, g_4_opt
 
+def gewichte_optimizer_multithreaded(gewichte_1, gewichte_2, gewichte_3, gewichte_4)
+    gewichte = [(i,j) for i in gewichte_3 for j in gewichte_4]
+    trenn_indizes = [i for i in range(0,len(gewichte)+1)]
+
 datensatz = []
 with open("iris.csv") as f:
     csv_reader = csv.reader(f)
@@ -54,10 +58,10 @@ for i in range(len(datensatz)):
         datensatz[i][j] /= maxima[j]
 
 
-def krk(testdatenzeile, trainingsdaten, k):
+def krk(testdatenzeile, trainingsdaten, k, gewichte : list):
     abstände = []
     for zeile in trainingsdaten:
-        abstände.append([abstand(zeile[:-1], testdatenzeile), zeile[-1]])
+        abstände.append([abstand(zeile[:-1], testdatenzeile, gewichte), zeile[-1]])
 
     radius_k = list(filter(lambda x: x[0] <= k, abstände))
 
@@ -67,7 +71,7 @@ def krk(testdatenzeile, trainingsdaten, k):
     vorhersage = max([abstand[1] for abstand in radius_k], key=radius_k.count)
     return vorhersage
 
-def validierung(p: float, k: float, h: int) -> float:
+def validierung(p: float, k: float, h: int, gewichte : list) -> float:
     treffer = 0
     
     for _ in range(h):
@@ -76,20 +80,20 @@ def validierung(p: float, k: float, h: int) -> float:
         trainingsdaten = datensatz[int(len(datensatz) * p):]
 
         for testdatenzeile in testdaten:
-            vermutung = krk(testdatenzeile[:-1], trainingsdaten, k)
+            vermutung = krk(testdatenzeile[:-1], trainingsdaten, k, gewichte)
             if vermutung == testdatenzeile[-1]:
                 treffer += 1
 
     return treffer / (len(testdaten) * h)
 
-def k_optimierung(n: int):
+def k_optimierung(n: int, gewichte: list):
     ks = []
     ergebnisse = []
     k_opt = 0
     erg_opt = 0
     for k in tqdm.tqdm(range(n)):
         ks.append(k / n)
-        erg = validierung(0.2, k / n, n // 2)
+        erg = validierung(0.2, k / n, n // 2 ,gewichte)
         ergebnisse.append(erg)
         if erg > erg_opt:
             k_opt = k / n

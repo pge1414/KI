@@ -117,7 +117,7 @@ def k_optimierung(n: int):
 #     all_list.append(float(sum_p)/float(m))
 #     return all_list
 
-print(gewichte_optimizer([40, 0.2, 1],[40, 0.2, 1],[40, 0.2, 1],[40, 0.2, 1] ))
+print(gewichte_optimizer([40, 20, 0.2, 1],[40, 20, 0.2, 1],[40, 20, 0.2, 1],[40, 20, 0.2, 1] ))
 # g_2_opt = 0
 # g_3_opt = 0
 # d_opt = 0

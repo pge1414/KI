@@ -106,7 +106,12 @@ if __name__ == '__main__':
     anzahl_t = 8
     d = gewichte_optimierung_multithreaded([i / 4 for i in range(1, 20)], [i / 4 for i in range(1, 20)], anzahl_t)
     print(f"Beste Genauigkeit: {d[0]} bei g_3={d[1]} und g_4={d[2]}")
-    fig = plt.figure()
+    fig = plt.figure("K-Radius-Klassifikator")
     ax = fig.add_subplot(projection="3d")
     ax.plot_trisurf(np.array(list(zip(*d[3]))[0]), np.array(list(zip(*d[3]))[1]), np.array(list(zip(*d[3]))[2]), cmap=cm.coolwarm)
+    ax.set_xlabel("g_3")
+    ax.set_ylabel("g_4")
+    ax.set_zlabel("Anteil korrekt klassifiziert")
+    ax.scatter(d[1], d[2], d[0], color="green", s=100)
+    ax.text(d[1], d[2], d[0]+0.03, s=f"({d[1]}, {d[2]}, {round(d[0],3)})")
     plt.show()

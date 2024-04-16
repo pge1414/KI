@@ -1,4 +1,4 @@
-import csv, math, random, tqdm, matplotlib.pyplot as plt, threading
+import csv, math
 
 datensatz = []
 with open("iris.csv") as f:
@@ -8,19 +8,26 @@ with open("iris.csv") as f:
 
 
 
-datensatz_transponiert = list(zip(*datensatz)) # ???
-datensatz_transponiert
-
-maxima = [max(datensatz_transponiert[0]), max(datensatz_transponiert[1]), max(datensatz_transponiert[2]), max(datensatz_transponiert[3])]
-for i in range(len(datensatz)):
-    for j in range(len(datensatz[i]) - 1):
-        datensatz[i][j] /= maxima[j]
-
 zeilen_nach_art = {}
+for zeile in datensatz:
+    if not zeile[-1] in zeilen_nach_art: 
+        if not zeile[-1] in zeilen_nach_art:
+            zeilen_nach_art[zeile[-1]] = []
 
-for i in range(len(datensatz)):
-    if not datensatz[i][:-1] in zeilen_nach_art:
-        zeilen_nach_art[datensatz[i][:-1]].append(datensatz[i])
+        zeilen_nach_art[zeile[-1]].append(zeile[:-1])
+
+def gauss(o,p,x):
+    return 1/(o*math.sqrt(2*math.pi))*math.e**(-0.5((x-p)/o)**2)
+
+def varianz(a : float, b : float, c : float, d : float) -> float:
+    er = (a+b+c+d)/4
+    return ((a-er)**2+(b-er)**2+(c-er)**2+(d-er)**2)/4
+
+def standardverteilung(varianz : float) :
+    return math.sqrt(varianz)
+
+print(zeilen_nach_art)
+
 
 #erstelle ein dict, dass für jede vorkommende art alle zugehörigen datenzeilen abspeichert
 #erstelle im anschluss ein dict, das für jede kombination aus art und eingabeparameter (3*4 = 12 stück) die den datensatz entsprechende gauss verteilung enthält

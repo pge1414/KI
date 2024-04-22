@@ -44,7 +44,7 @@ def nbk(daten):
         p_nach_art[art] = 1
     
         for i in range(len(daten)):
-            p_nach_art[art] *= gauss(daten[i], mu_sigma_nach_art[art][i][0], mu_sigma_nach_art[art][i][1])
+            p_nach_art[art] += gauss(daten[i], mu_sigma_nach_art[art][i][0], mu_sigma_nach_art[art][i][1])
 
         # TODO Wo bei der Berechnung von p der Fehler?
 

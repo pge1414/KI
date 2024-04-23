@@ -12,7 +12,7 @@ def gauss(x, mu, sigma):
     return (1/(sigma*math.sqrt(2*math.pi))) * math.e ** (-0.5 * ((x - mu) / sigma) ** 2)
 
 datensatz = []
-with open("iris_datensatz.csv") as f:
+with open("iris.csv") as f:
     csv_reader = csv.reader(f)
     for zeile in csv_reader:
         datensatz.append([float(wert) for wert in zeile[:-1]] + [zeile[-1]])
@@ -44,7 +44,7 @@ def nbk(daten):
         p_nach_art[art] = 1
     
         for i in range(len(daten)):
-            p_nach_art[art] *= gauss(daten[i], mu_sigma_nach_art[art][i][0], mu_sigma_nach_art[art][i][1])
+            p_nach_art[art] *= p_nach_art[art] * gauss(daten[i], mu_sigma_nach_art[art][i][0] , mu_sigma_nach_art[art][i][1])
 
         # TODO Wo bei der Berechnung von p der Fehler?
 

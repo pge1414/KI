@@ -44,11 +44,7 @@ def nbk(daten):
         p_nach_art[art] = 1
     
         for i in range(len(daten)):
-<<<<<<< HEAD
             p_nach_art[art] *= p_nach_art[art] * gauss(daten[i], mu_sigma_nach_art[art][i][0] , mu_sigma_nach_art[art][i][1])
-=======
-            p_nach_art[art] += gauss(daten[i], mu_sigma_nach_art[art][i][0], mu_sigma_nach_art[art][i][1])
->>>>>>> 5481c24fd1925b6b67358a01ab288c3a49bc0d53
 
         # TODO Wo bei der Berechnung von p der Fehler?
 
@@ -58,3 +54,6 @@ def nbk(daten):
     return art_max
 
 print(nbk([6.3,3.3,6.0,2.5]))
+print(datensatz[0][-1])
+
+# mehrdimensionale Gauss-Verteilung: https://de.wikipedia.org/wiki/Mehrdimensionale_Normalverteilung

@@ -36,7 +36,7 @@ def gewichte_optimizer(gewichte_0, gewichte_1, gewichte_2,gewichte_3):
                         g_4_opt = g_3
     return d_opt, g_0_opt, g_1_opt, g_3_opt, g_4_opt
 
-def gewichte_optimizer_multithreaded(gewichte_1, gewichte_2, gewichte_3, gewichte_4)
+def gewichte_optimizer_multithreaded(gewichte_1, gewichte_2, gewichte_3, gewichte_4):
     gewichte = [(i,j) for i in gewichte_3 for j in gewichte_4]
     trenn_indizes = [i for i in range(0,len(gewichte)+1)]
 

@@ -6,22 +6,51 @@ with open("iris.csv") as f:
     for zeile in csv_reader:
         datensatz.append([float(wert) for wert in zeile[:-1]] + [zeile[-1]])
 
-def m(x : list, y : list):
-    return sum(y) / sum(x)
-        
-def term(m : float, x : float):
-    return m*x
+x1_setosa = []
+x2_setosa = []
+x3_setosa = []
+x4_setosa = []
 
-x_setosa = []
-y_setosa = []
+x1_versicolor = []
+x2_versicolor = []
+x3_versicolor = []
+x4_versicolor = []
+
+x1_virginica = []
+x2_virginica = []
+x3_virginica = []
+x4_virginica = []
+
 
 for i in datensatz:
     if i[4] == "Iris-setosa":
-        x_setosa.append(i[0])
+        x1_setosa.append(i[0])
     if i[4] == "Iris-setosa":
-        y_setosa.append(i[1])
+        x2_setosa.append(i[1])
+    if i[4] == "Iris-setosa":
+        x3_setosa.append(i[2])
+    if i[4] == "Iris-setosa":
+        x4_setosa.append(i[3])
 
-print(term(m(x_setosa, y_setosa), 5.4))
+    if i[4] == "Iris-setosa":
+        x1_setosa.append(i[0])
+    if i[4] == "Iris-setosa":
+        x2_setosa.append(i[1])
+    if i[4] == "Iris-setosa":
+        x3_setosa.append(i[2])
+    if i[4] == "Iris-setosa":
+        x4_setosa.append(i[3])
+        
+    if i[4] == "Iris-setosa":
+        x1_setosa.append(i[0])
+    if i[4] == "Iris-setosa":
+        x2_setosa.append(i[1])
+    if i[4] == "Iris-setosa":
+        x3_setosa.append(i[2])
+    if i[4] == "Iris-setosa":
+        x4_setosa.append(i[3])
+
+
 
 ################################################################
 

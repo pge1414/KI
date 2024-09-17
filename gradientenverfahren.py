@@ -1,4 +1,4 @@
-import csv, matplotlib.pyplot as plt, numpy as np
+import csv, matplotlib.pyplot as plt, numpy as np,math
 from mpl_toolkits import mplot3d
 
 datensatz = []
@@ -15,10 +15,79 @@ for zeile in datensatz:
 
 liste = [0.3, 0.5, 0.8, 1, 1.2, 1.5, 1.8, 2]
 
-def mittelwert(liste : list)-> int :
+sx_setosa = [] #standartabweichung
+sy_setosa = []
+sx_virginica = []
+sy_virginica = []
+sx_versicolor = []
+sy_versicolor = []
+
+x_setosa = [] #mittelwert
+y_setosa = []
+x_virginica = []
+y_virginica = []
+x_versicolor = []
+y_versicolor = []
+
+s_x_setosa = [] #kovarianz
+s_y_setosa = []
+s_x_versicolor = []
+s_y_versicolor = []
+s_x_virginica = []
+s_y_virginica =[]
+
+rx_setosa = [] #korelation
+ry_setosa = []
+rx_versicolor = []
+ry_versicolor = []
+rx_virginica = []
+ry_virginica =[]
+
+for i in datensatz:
+    if i[4] == "Iris-setosa":
+        sx_setosa.append(i[0])
+        sy_setosa.append(i[1])
+
+        x_setosa.append(i[0])
+        y_setosa.append(i[1])
+
+        s_x_setosa.append(i[0])
+        s_y_setosa.append(i[1])
+
+        rx_setosa.append(i[0])
+        ry_setosa.append(i[1])
+
+    if i[4] == "Iris-versicolor":
+        sx_versicolor.append(i[0])
+        sy_versicolor.append(i[1])
+
+        x_versicolor.append(i[0])
+        y_versicolor.append(i[1])
+
+        s_x_versicolor.append(i[0])
+        s_y_versicolor.append(i[1])
+
+        rx_versicolor.append(i[0])
+        ry_versicolor.append(i[1])
+
+    if i[4] == "Iris-virginica":
+        sx_virginica.append(i[0])
+        sy_virginica.append(i[1])
+
+        x_virginica.append(i[0])
+        y_virginica.append(i[1])
+
+        s_x_virginica.append(i[0])
+        s_y_virginica.append(i[1])
+
+        rx_virginica.append(i[0])
+        ry_virginica.append(i[1])
+
+
+def mittelwert(liste : list)-> int:
     return sum(liste)/ len(liste)
 
-def kovarianz(liste_x : list, liste_y : list)-> int :
+def kovarianz(liste_x : list, liste_y : list)-> int:
     liste_produkte = []
     for i in range(len(liste_x)):
         diff_x = liste_x[i] - sum(liste_x) / len(liste_x)
@@ -26,5 +95,16 @@ def kovarianz(liste_x : list, liste_y : list)-> int :
         liste_produkte.append(diff_x*diff_y)
     return sum(liste_produkte)
 
-def regression(prädiktoren, wert):
+def korelation(liste_x : list, liste_y : list):
+    return int(np.correlate(liste_x, liste_y))
+
+def standartabweichung(liste : list):
+    o = []
+    for i in range(len(liste)):
+        o.append(math.sqrt((liste[i]-mittelwert(liste))**2 * 1/3)) # 1/3 weil alle blumen gleich of vorkommen
+    return sum(o)
+
+def regression(prädiktoren, wert, a, b):
     pass
+
+print(korelation([1,2,3],[1,2,3]))

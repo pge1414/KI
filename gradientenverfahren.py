@@ -13,7 +13,7 @@ for zeile in datensatz:
         datensatz_nach_art[zeile[-1]] = []
     datensatz_nach_art[zeile[-1]].append(zeile[:-1])  
 
-liste = [0.3, 0.5, 0.8, 1, 1.2, 1.5, 1.8, 2]
+gewichte = [0.3, 0.5, 0.8, 1, 1.2, 1.5, 1.8, 2]
 
 sx_setosa = [] #standartabweichung
 sy_setosa = []
@@ -104,7 +104,62 @@ def standartabweichung(liste : list):
         o.append(math.sqrt((liste[i]-mittelwert(liste))**2 * 1/3)) # 1/3 weil alle blumen gleich of vorkommen
     return sum(o)
 
-def regression(prädiktoren, wert, a, b):
-    pass
+def b(sy, sx, rxy):
+    return (sy/sx) *rxy
 
-print(korelation([1,2,3],[1,2,3]))
+def a(sy, sx, rxy, x, y):
+    return -(sy/sx) * rxy * x + y
+
+def regression(prädiktor, a, b):
+    return b*prädiktor + a
+
+x_ = mittelwert(x_setosa)
+y_ = mittelwert(y_setosa)
+
+sx = standartabweichung(sx_setosa)
+sy = standartabweichung(sy_setosa)
+
+sxy = kovarianz(s_x_setosa, s_y_setosa) 
+
+rxy = kovarianz(rx_setosa, ry_setosa)
+
+a_ = a(sy, sx, rxy, x_, y_)
+b_ = b(sy, sx, rxy)
+
+# 4.3,3.0 ,,,, 5.2,3.5
+
+# print(regression(4.7 , a_, b_))
+
+setosa_list = []
+for i in datensatz:
+    if i[4] == "Iris-setosa":
+        setosa_list.append(i)
+
+ergebnisse = {}
+
+def differenz(x, y):
+    if x <= y:
+        return y-x
+    else:
+        return x-y
+
+for i in gewichte:
+    for j in setosa_list:
+        ergebnisse.update({differenz(j[1],regression(j[0]*i, a_, b_)) : i})
+
+key = []
+value = []
+
+for i in ergebnisse.keys():
+    key.append(i)
+for i in ergebnisse.values():
+    value.append(i)
+
+print(ergebnisse)
+
+print(min(key))
+for i in range(len(key)): 
+    if key[i] == min(key): print(value[i]) 
+
+
+# gibt nur kleinstes ergebnis und dazu passendes gewicht zurück ... muss summe aller ergebnisse pro gewicht vergleichen

@@ -13,7 +13,7 @@ for zeile in datensatz:
         datensatz_nach_art[zeile[-1]] = []
     datensatz_nach_art[zeile[-1]].append(zeile[:-1])  
 
-gewichte = [0.3, 0.5, 0.8, 1, 1.2, 1.5, 1.8, 2]
+gewichte = [0.8, 0.9, 0.9999, 1, 1.02, 1.5, 1.1, 1.25]
 
 sx_setosa = [] #standartabweichung
 sy_setosa = []
@@ -145,7 +145,7 @@ def differenz(x, y):
 
 for i in gewichte:
     for j in setosa_list:
-        ergebnisse.update({differenz(j[1],regression(j[0]*i, a_, b_)) : i})
+        ergebnisse.update({differenz(j[1],regression(j[0]*i, a_*i, b_*i)) : i})
 
 key = []
 value = []
@@ -160,6 +160,16 @@ print(ergebnisse)
 print(min(key))
 for i in range(len(key)): 
     if key[i] == min(key): print(value[i]) 
-
+print(len(key))
+print(len(value))
+print(len(ergebnisse))
+print(len(datensatz))
 
 # gibt nur kleinstes ergebnis und dazu passendes gewicht zurück ... muss summe aller ergebnisse pro gewicht vergleichen
+
+# TODO auf 1. Oktober 2024
+
+# Lies nachfolgenden Artikel und verstehe das Konzept einer Fehlerfunktion nochmals genauer:
+# https://e2eml.school/how_modeling_works_3
+# Überlege dir weitere Szenarien mit quadratischre, absoluter, absoluter mit Sättigung oder quadratischer mit
+# indifferenter Region Fehlerfunktionen.

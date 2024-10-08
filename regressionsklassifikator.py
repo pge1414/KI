@@ -111,7 +111,6 @@ def test(durchgänge):
 
 print(test(1))
 
-def umformer
 
 
 #6.3,2.3,4.4,1.3,Iris-versicolor

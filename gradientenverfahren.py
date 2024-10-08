@@ -165,6 +165,24 @@ print(len(value))
 print(len(ergebnisse))
 print(len(datensatz))
 
+zahl0 = 0
+zahl1 = 0
+zahl2 = 0
+zahl3 = 0
+zahl4 = 0
+zahl5 = 0
+zahl6 = 0
+zahl7 = 0
+
+for i in range(len(value)):
+    if value[i] == 0.8:
+        zahl0+= key[i]
+
+
+while ergebnisse.values() == 0.8:
+    print(ergebnisse.keys())
+
+
 # gibt nur kleinstes ergebnis und dazu passendes gewicht zurück ... muss summe aller ergebnisse pro gewicht vergleichen
 
 # TODO auf 1. Oktober 2024

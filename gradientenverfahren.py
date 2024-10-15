@@ -13,7 +13,7 @@ for zeile in datensatz:
         datensatz_nach_art[zeile[-1]] = []
     datensatz_nach_art[zeile[-1]].append(zeile[:-1])  
 
-gewichte = [0.8, 0.9, 0.9999, 1, 1.02, 1.5, 1.1, 1.25]
+gewichte = [0.95, 0.97, 0.99, 1, 1.01, 1.03, 1.05]
 
 sx_setosa = [] #standartabweichung
 sy_setosa = []
@@ -160,10 +160,7 @@ print(ergebnisse)
 print(min(key))
 for i in range(len(key)): 
     if key[i] == min(key): print(value[i]) 
-print(len(key))
-print(len(value))
-print(len(ergebnisse))
-print(len(datensatz))
+
 
 zahl0 = 0
 zahl1 = 0
@@ -175,11 +172,41 @@ zahl6 = 0
 zahl7 = 0
 
 for i in range(len(value)):
-    if value[i] == 0.8:
+    if value[i] == 0.95:
         zahl0+= key[i]
+for i in range(len(value)):
+    if value[i] == 0.97:
+        zahl1+= key[i]
+for i in range(len(value)):
+    if value[i] == 0.99:
+        zahl2+= key[i]
+for i in range(len(value)):
+    if value[i] == 1:
+        zahl3+= key[i]
+for i in range(len(value)):
+    if value[i] == 1.01:
+        zahl4+= key[i]
+for i in range(len(value)):
+    if value[i] == 1.03:
+        zahl5+= key[i]
+for i in range(len(value)):
+    if value[i] == 1.05:
+        zahl6+= key[i]
+
+print(zahl0)
+print(zahl1)
+print(zahl2)
+print(zahl3)
+print(zahl4)
+print(zahl5)
+print(zahl6)
+
+zahlen = [zahl0, zahl1, zahl2, zahl3, zahl4, zahl5, zahl6]
 
 
-
+fig, ax = plt.subplots()
+ax.plot(gewichte, zahlen)
+plt.show()
 
 
 # gibt nur kleinstes ergebnis und dazu passendes gewicht zurück ... muss summe aller ergebnisse pro gewicht vergleichen

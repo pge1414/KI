@@ -179,8 +179,7 @@ for i in range(len(value)):
         zahl0+= key[i]
 
 
-while ergebnisse.values() == 0.8:
-    print(ergebnisse.keys())
+
 
 
 # gibt nur kleinstes ergebnis und dazu passendes gewicht zurück ... muss summe aller ergebnisse pro gewicht vergleichen

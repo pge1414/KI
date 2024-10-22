@@ -14,10 +14,10 @@ for zeile in datensatz:
     datensatz_nach_art[zeile[-1]].append(zeile[:-1])  
 
 gewichte = []
-a = 0.095
-while a < 1.005:
-    a += 0.0001
-    gewichte.append(a)
+g1 = 0.095
+while g1 < 1.005:
+    g1 += 0.0001
+    gewichte.append(g1)
 
 sx_setosa = [] #standartabweichung
 sy_setosa = []
@@ -150,6 +150,7 @@ def differenz(x, y):
 for i in gewichte:
     for j in setosa_list:
         ergebnisse.update({differenz(j[1],regression(j[0]*i, a_*i, b_*i)) : i})
+        print(i)
 
 key = []
 value = []

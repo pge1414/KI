@@ -13,7 +13,11 @@ for zeile in datensatz:
         datensatz_nach_art[zeile[-1]] = []
     datensatz_nach_art[zeile[-1]].append(zeile[:-1])  
 
-gewichte = [0.95, 0.97, 0.99, 1, 1.01, 1.03, 1.05]
+gewichte = []
+a = 0.095
+while a < 1.005:
+    a += 0.0001
+    gewichte.append(a)
 
 sx_setosa = [] #standartabweichung
 sy_setosa = []
@@ -155,54 +159,18 @@ for i in ergebnisse.keys():
 for i in ergebnisse.values():
     value.append(i)
 
-print(ergebnisse)
-
-print(min(key))
 for i in range(len(key)): 
     if key[i] == min(key): print(value[i]) 
 
+print(gewichte)
 
-zahl0 = 0
-zahl1 = 0
-zahl2 = 0
-zahl3 = 0
-zahl4 = 0
-zahl5 = 0
-zahl6 = 0
-zahl7 = 0
-
-for i in range(len(value)):
-    if value[i] == 0.95:
-        zahl0+= key[i]
-for i in range(len(value)):
-    if value[i] == 0.97:
-        zahl1+= key[i]
-for i in range(len(value)):
-    if value[i] == 0.99:
-        zahl2+= key[i]
-for i in range(len(value)):
-    if value[i] == 1:
-        zahl3+= key[i]
-for i in range(len(value)):
-    if value[i] == 1.01:
-        zahl4+= key[i]
-for i in range(len(value)):
-    if value[i] == 1.03:
-        zahl5+= key[i]
-for i in range(len(value)):
-    if value[i] == 1.05:
-        zahl6+= key[i]
-
-print(zahl0)
-print(zahl1)
-print(zahl2)
-print(zahl3)
-print(zahl4)
-print(zahl5)
-print(zahl6)
-
-zahlen = [zahl0, zahl1, zahl2, zahl3, zahl4, zahl5, zahl6]
-
+zahlen = []
+for i in gewichte:
+    zahl = 0
+    for j in range(len(value)):
+        if j == i:
+            zahl+= key[j]
+    zahlen.append(zahl)
 
 fig, ax = plt.subplots()
 ax.plot(gewichte, zahlen)

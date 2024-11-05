@@ -14,9 +14,9 @@ for zeile in datensatz:
     datensatz_nach_art[zeile[-1]].append(zeile[:-1])  
 
 gewichte = []
-g1 = 0.095
-while g1 < 1.005:
-    g1 += 0.0001
+g1 = 0.99
+while g1 < 0.9955:
+    g1 += 0.00001
     gewichte.append(g1)
 
 sx_setosa = [] #standartabweichung
@@ -143,14 +143,14 @@ ergebnisse = {}
 
 def differenz(x, y):
     if x <= y:
-        return y-x
+        return (y-x)**2
     else:
-        return x-y
+        return (x-y)**2
 
 for i in gewichte:
     for j in setosa_list:
         ergebnisse.update({differenz(j[1],regression(j[0]*i, a_*i, b_*i)) : i})
-        print(i)
+
 
 key = []
 value = []
@@ -163,26 +163,20 @@ for i in ergebnisse.values():
 for i in range(len(key)): 
     if key[i] == min(key): print(value[i]) 
 
-print(gewichte)
-
 zahlen = []
 for i in gewichte:
-    zahl = 0
+    azahl = 0
     for j in range(len(value)):
-        if j == i:
-            zahl+= key[j]
-    zahlen.append(zahl)
+        if i == value[j]:
+            azahl+= key[j]
+    zahlen.append(azahl)
 
 fig, ax = plt.subplots()
+#ax.scatter(gewichte, zahlen)
 ax.plot(gewichte, zahlen)
 plt.show()
 
+# interessant
 
-# gibt nur kleinstes ergebnis und dazu passendes gewicht zurück ... muss summe aller ergebnisse pro gewicht vergleichen
-
-# TODO auf 1. Oktober 2024
-
-# Lies nachfolgenden Artikel und verstehe das Konzept einer Fehlerfunktion nochmals genauer:
-# https://e2eml.school/how_modeling_works_3
-# Überlege dir weitere Szenarien mit quadratischre, absoluter, absoluter mit Sättigung oder quadratischer mit
-# indifferenter Region Fehlerfunktionen.
+# https://databasecamp.de/ki/gradientenverfahren-ein-steiler-abstieg
+# https://drsteinkamp.de/sympy.html

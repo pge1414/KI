@@ -117,6 +117,8 @@ def a(sy, sx, rxy, x, y):
 def regression(prädiktor, a, b):
     return b*prädiktor + a
 
+
+
 x_ = mittelwert(x_setosa)
 y_ = mittelwert(y_setosa)
 
@@ -161,7 +163,7 @@ for i in ergebnisse.values():
     value.append(i)
 
 for i in range(len(key)): 
-    if key[i] == min(key): print(value[i]) 
+    if key[i] == min(key): print("Minima: " + str(value[i])) 
 
 zahlen = []
 for i in gewichte:

@@ -1,4 +1,4 @@
-import random
+import random,time
 def Not(x : int):
     return x - x + 1
 
@@ -45,19 +45,23 @@ def classification(v,w,x,y):
     else:
         return 1
 
-def perceptronlearning(daten : list):
-    w = 0
-    v = 0
+def perceptronlearning(daten : list, w,v):
     lernrate = 0.1
-    for a in range(10000):
-        for i in range(len(daten)-1):
+    while True:
+        for i in range(len(daten[1])-1):
+            time.sleep(1)
             x = daten[i][0]
             y = daten[i][1]
-            if classification(v,w,x,y) != daten[i][2]:
+            print(x,y)
+            if classification(v,w,x,y) != AndII(x,y):
+                print("x")
                 w += lernrate    
                 v += lernrate
                 print(w,v)
-            else: 
-                if i == len(daten)-1:
+            else:
+                print(i, w,v,x,y,classification(v,w,x,y), AndII(x,y))
+                if i == 2:
+                    print("y")
+                    False
                     return w, v
-print (perceptronlearning([[1,1,1],[0,1,0]]))
+print (perceptronlearning([[1,1,1],[0,1,0]],0,0))

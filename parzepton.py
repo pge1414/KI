@@ -40,28 +40,51 @@ def Or(x : int, y : int):
 # print(and_lernen())
 
 def classification(v,w,x,y):
-    if v*x + w*y <= 0:
+    if v*x + w*y-1 <= 0:
         return 0
     else:
         return 1
 
 def perceptronlearning(daten : list, w,v):
-    lernrate = 0.1
+    lernrate = 0.5
     while True:
         for i in range(len(daten[1])-1):
-            time.sleep(1)
+            time.sleep(5)
             x = daten[i][0]
             y = daten[i][1]
             print(x,y)
             if classification(v,w,x,y) != AndII(x,y):
                 print("x")
+                print(i, w,v, "x: ", x, "y: ", y, "/-----", classification(v,w,x,y), "-----", AndII(x,y))
                 w += lernrate    
                 v += lernrate
-                print(w,v)
+                
             else:
                 print(i, w,v,x,y,classification(v,w,x,y), AndII(x,y))
                 if i == 2:
                     print("y")
                     False
                     return w, v
-print (perceptronlearning([[1,1,1],[0,1,0]],0,0))
+#print (perceptronlearning([[1,1,1],[0,1,0]],0,0))
+
+# nginx & https & dns server
+
+def adalinelearning(x: list, w : list, eta : float, o : list):
+    ergebnis = []
+    while True:
+        for i in range(len(x)):
+            #time.sleep(1)
+            print(w)
+            if w[i] * x[i] != o[i]:
+                w[i] += eta*(o[i]-(w[i] * x[i]))*x[i]
+            else:
+                continue
+            ergebnis.clear()
+        for i in range(len(x)):
+            ergebnis.append(w[i] * x[i])
+        if ergebnis == o:
+            return w
+        else:
+            True
+
+print(adalinelearning([0,1,0,1,1,1], [0,0,0,0,0,0], 0.5, [0,2,0,2,3,2]))

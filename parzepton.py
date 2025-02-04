@@ -74,7 +74,7 @@ def adalinelearning(x: list, w : list, o : list):
     while True:
         for i in range(len(x)):
             #time.sleep(1)
-            print(w)
+            #print(w)
             if w[i] * x[i] != o[i]:
                 eta=1/(x[i]**2)
                 w[i] += eta*(o[i]-(w[i] * x[i]))*x[i]
@@ -88,4 +88,4 @@ def adalinelearning(x: list, w : list, o : list):
         else:
             True
 
-print(adalinelearning([0,14,0,16,16,16], [0,0,0,0,0,0], [0,1.5,0,22134,312,244]))
+print(adalinelearning([0,14.5,0,16,23.4,16], [0,0,0,0,0,0], [0,1.5,0,22134,312,244]))

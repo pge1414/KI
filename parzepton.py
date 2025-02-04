@@ -69,13 +69,14 @@ def perceptronlearning(daten : list, w,v):
 
 # nginx & https & dns server
 
-def adalinelearning(x: list, w : list, eta : float, o : list):
+def adalinelearning(x: list, w : list, o : list):
     ergebnis = []
     while True:
         for i in range(len(x)):
             #time.sleep(1)
             print(w)
             if w[i] * x[i] != o[i]:
+                eta=1/(x[i]**2)
                 w[i] += eta*(o[i]-(w[i] * x[i]))*x[i]
             else:
                 continue
@@ -87,4 +88,4 @@ def adalinelearning(x: list, w : list, eta : float, o : list):
         else:
             True
 
-print(adalinelearning([0,1,0,1,1,1], [0,0,0,0,0,0], 0.5, [0,2,0,2,3,2]))
+print(adalinelearning([0,14,0,16,16,16], [0,0,0,0,0,0], [0,1.5,0,22134,312,244]))

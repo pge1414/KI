@@ -1,4 +1,4 @@
-import random,time
+import random,time,math, numpy as np
 def Not(x : int):
     return x - x + 1
 
@@ -69,6 +69,60 @@ def perceptronlearning(daten : list, w,v):
 
 # nginx & https & dns server
 
+
+
+
+
+def mittelwert(liste : list)-> int:
+    return sum(liste)/ len(liste)
+
+def kovarianz(liste_x : list, liste_y : list)-> int:
+    liste_produkte = []
+    for i in range(len(liste_x)):
+        diff_x = liste_x[i] - sum(liste_x) / len(liste_x)
+        diff_y = liste_y[i] - sum(liste_y) / len(liste_y)
+        liste_produkte.append(diff_x*diff_y)
+    return sum(liste_produkte)
+
+
+
+
+def korelation(liste_x : list, liste_y : list):
+    return int(np.correlate(liste_x, liste_y))
+
+
+
+
+def standartabweichung(liste : list):
+    o = []
+    for i in range(len(liste)):
+        o.append(math.sqrt((liste[i]-mittelwert(liste))**2 * 1/3)) # 1/3 weil alle blumen gleich of vorkommen
+    return sum(o)
+
+
+
+
+def b(sy, sx, rxy):
+    return (sy/sx) *rxy
+
+
+
+
+
+def a(sy, sx, rxy, x, y):
+    return -(sy/sx) * rxy * x + y
+
+
+
+
+
+def regression(prädiktor, a, b):
+    return b*prädiktor + a
+
+
+
+
+
 def adalinelearning(x: list, w : list, o : list):
     ergebnis = []
     while True:
@@ -88,4 +142,33 @@ def adalinelearning(x: list, w : list, o : list):
         else:
             True
 
-print(adalinelearning([0,14.5,0,16,23.4,16], [0,0,0,0,0,0], [0,1.5,0,22134,312,244]))
+def adaline(x : list, y : list):
+    ergebnis = []
+    for i in range(len(x)-1):
+        ergebnis.append(adalinelearning(x[i], [0,0,0,0,0], y[i]))
+        return ergebnis
+
+
+x = [[0,1,0,0,1],[1,1,1,0,1],[1,1,1,1,1],[0,0,0,0,1],[1,1,0,0,1],[0,0,0,0,0],[0,1,1,0,1],[0,1,0,0,0]]
+y = [[0,1,0,0,1],[1,1,1,0,1],[1,1,1,1,1],[0,0,0,0,1],[1,1,0,0,1],[0,0,0,0,0],[0,1,1,0,1],[0,1,0,0,0]]
+
+datensatz = adaline(x,y)
+
+for i in range(len(x)-1):
+    x_datensatz = 
+
+x_ = mittelwert(datensatz)
+y_ = mittelwert(datensatz)
+
+sx = standartabweichung(datensatz)
+sy = standartabweichung(datensatz)
+
+sxy = kovarianz() 
+
+rxy = kovarianz(rx_setosa, ry_setosa)
+
+a_ = a(sy, sx, rxy, x_, y_)
+b_ = b(sy, sx, rxy)
+
+
+print(adalinelearning([0,1,0,-1,23.4,16], [0,0,0,0,0,0], [0,1,0,0,1,1]))

@@ -142,12 +142,18 @@ def adalinelearning(x: list, w : list, o : list):
         else:
             True
 
+def differenz(x, y):
+    if x <= y:
+        return (y-x)**2
+    else:
+        return (x-y)**2
+
 def adaline(x : list, y : list):
     ergebniss = []
     for i in range(len(x)):
         print(adalinelearning(x[i], [0,0,0,0,0], y[i]))
         ergebniss.append(adalinelearning(x[i], [0,0,0,0,0], y[i]))
-        return ergebniss
+    return ergebniss
 
 
 x = [[0,1,0,0,1],[1,1,1,0,1],[1,1,1,1,1],[0,0,0,0,1],[1,1,0,0,1],[0,0,0,0,0],[0,1,1,0,1],[0,1,0,0,0]]
@@ -195,7 +201,7 @@ rxy = korelation(datensatz_kor, f)
 a_ = a(sy, sx, rxy, x_, y_)
 b_ = b(sy, sx, rxy)
 
-print(regression(1, a_, b_))
+ergebnisse = {}
 
-
-
+for j in x:
+        ergebnisse.update({differenz(j[1],regression(j[0]*i, a_*i, b_*i)) : i})

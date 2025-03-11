@@ -27,9 +27,6 @@ class Adaline:
             return 0
 
         
-# w = Adaline.adalinelerning(0.1, [1,1,2,1], [0.1,0.1,0.1,0.1], 1)
-        
-# print(f"y : {Adaline.Or([0,0,0,0], w)}")
 
 class Test:
 
@@ -119,8 +116,6 @@ class Regression:
 
 
 testerg = Test.tester(0.2, [[1,0,0],[0,1,0],[0,1,0],[1,0,1],[0,1,1]], [[1,1,1],[1,1,1],[1,1,1],[1,1,1],[1,1,1]], [1,1,1,1,1])
-# print(f"Ergebnis: {testerg}")
-# Test.supporter(testerg)
 
 print(Regression.final(Test.supporter(testerg)[2], Test.supporter(testerg)[0], Test.supporter(testerg)[1]))
 

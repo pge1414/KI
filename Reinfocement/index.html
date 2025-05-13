@@ -38,43 +38,49 @@
         .white{
             background-color: wheat;
         }
+        .black.grün {
+            background-color: darkgreen;
+        }
+        .white.green {
+            background-color: lightgreen;
+        }
     </style>
 </head>
 <body>
     <h1>HexaPawn</h1>
     <div id="spiel">
         <div class="table-row">
-            <div id ="00" class = "table-cell white">
+            <div id ="00" class = "table-cell white" onclick="aktion(this.id)">
                 <img>
             </div>
-            <div id ="01" class = "table-cell black">
+            <div id ="01" class = "table-cell black" onclick="aktion(this.id)"">
                 <img>
             </div>
-            <div id ="02" class = "table-cell white">
+            <div id ="02" class = "table-cell white" onclick="aktion(this.id)"">
                 <img>
             </div> 
 
         </div>
         <div class="table-row">
-            <div id ="10" class = "table-cell black">
+            <div id ="10" class = "table-cell black" onclick="aktion(this.id)"">
                 <img>
             </div>
-            <div id ="11" class = "table-cell white">
+            <div id ="11" class = "table-cell white" onclick="aktion(this.id)"">
                 <img>
             </div>
-            <div id ="12" class = "table-cell black">
+            <div id ="12" class = "table-cell black" onclick="aktion(this.id)"">
                 <img>
             </div>
 
         </div>
         <div class="table-row">
-            <div id ="20" class = "table-cell white">
+            <div id ="20" class = "table-cell white" onclick="aktion(this.id)"">
                 <img>
             </div>
-            <div id ="21" class = "table-cell black">
+            <div id ="21" class = "table-cell black" onclick="aktion(this.id)"">
                 <img>
             </div>
-            <div id ="22" class = "table-cell white">
+            <div id ="22" class = "table-cell white" onclick="aktion(this.id)"">
                 <img>
             </div>
 
@@ -93,7 +99,32 @@
                     document.getElementById("" +i +j).children[0].src = spielfeld[i][j]+ ".png";
             }
         }
-        
+
+        function möglicheZüge(i,j) {
+            farbe = spielfeld[i][j];
+            if (farbe == "w"){
+                möglicheFelder = []
+                if (j - 1 >= 0 && spielfeld[i-1][j - 1] == "s"){
+                    möglicheFelder.push([i-1,j-1])
+                }
+                if(spielfeld[i-1][j] == ""){
+                    möglicheFelder.push([i-1,j])
+                }
+                if(j+1 <=2 && spielfeld[i-1][j+1]){
+                    möglicheFelder.push([i-1,j+1])
+                }
+                
+                möglicheFelder.forEach(feld => {
+                    alert("" + feld[0] + feld[1]);
+                    document.getElementById("" + feld[0] + feld[1]).classList.add("grün");
+                });
+            } else if (farbe == "s"){
+                
+            }
+        }
+        function aktion(id){
+            möglicheZüge(parseInt(id[0]), parseInt(id[1]));
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="icon" href="favicon.png" type= "image/x-icon">-->
+    <title>HexaPawn</title>
+    <style>
+        body{
+            font-family: "Helvetica Neue";
+            text-align: center;
+            background-color: hsl(0,0%,10%);
+        }
+        h1{
+            font-size: 5vw;
+            color: wheat; 
+        }
+        #spiel{
+            display: table;
+            margin: auto;
+            border: 1vw solid black;
+        }
+        .table-row{
+            display: table-row;
+        }
+        .table-cell{
+            display: table-cell;
+            width: 15vw;
+            height: 15vw;
+            vertical-align: middle;
+        }
+        .table-cell img {
+            height: 80%;
+        }
+        .black{
+            background-color: gray;
+        }
+        .white{
+            background-color: wheat;
+        }
+    </style>
+</head>
+<body>
+    <h1>HexaPawn</h1>
+    <div id="spiel">
+        <div class="table-row">
+            <div id ="00" class = "table-cell white">
+                <img>
+            </div>
+            <div id ="01" class = "table-cell black">
+                <img>
+            </div>
+            <div id ="02" class = "table-cell white">
+                <img>
+            </div> 
+
+        </div>
+        <div class="table-row">
+            <div id ="10" class = "table-cell black">
+                <img>
+            </div>
+            <div id ="11" class = "table-cell white">
+                <img>
+            </div>
+            <div id ="12" class = "table-cell black">
+                <img>
+            </div>
+
+        </div>
+        <div class="table-row">
+            <div id ="20" class = "table-cell white">
+                <img>
+            </div>
+            <div id ="21" class = "table-cell black">
+                <img>
+            </div>
+            <div id ="22" class = "table-cell white">
+                <img>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        spielfeld = [["s","s","s"],
+        ["","",""],
+        ["w","w","w"]];
+
+        for (i = 0; i < spielfeld.length; i++){
+            console.log(1);
+            for (j=0; j < spielfeld[i].length; j++){
+                console.log(1);
+                if (spielfeld[i][j])
+                    document.getElementById("" +i +j).children[0].src = spielfeld[i][j]+ ".png";
+            }
+        }
+        
+    </script>
+</body>
+</html>

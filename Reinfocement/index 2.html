@@ -32,18 +32,19 @@
         }
         .table-cell img {
             height: 80%;
+            pointer-events: none;
         }
         .black {
-            background-color: rgb(62, 22, 22);
+            background-color: rgb(68, 27, 27);
         }
         .white {
             background-color: wheat;
         }
         .black.grün {
-            background-color: #3e7704af;
+            background-color: #00674b;
         }
         .white.grün {
-            background-color: #01c8619f;
+            background-color: #ACE1AF;
         }
     </style>
 </head>
@@ -89,19 +90,19 @@
         let spielfeld = [["s", "s", "s"],
                     ["", "", ""],
                     ["w", "w", "w"]];
-                    
-        let zugphase = "auswahl"
-        
-        function spielfeldAktualisieren () {
+
+        let zugphase = "auswahl";
+        let gewähltesFeld = null;
+        let aktuellerSpieler = "w";
+
+        function spielfeldAktualisieren() {
             for (i = 0; i < spielfeld.length; i++) {
                 for (j = 0; j < spielfeld[i].length; j++) {
-                    if (spielfeld[i][j]){
-                        document.getElementById("" +i + j).children[0].style.display ="inline";
+                    if (spielfeld[i][j]) {
+                        document.getElementById("" + i + j).children[0].style.display = "inline";
                         document.getElementById("" + i + j).children[0].src = spielfeld[i][j] + ".png";
-                    }
-                    else{
-                        document.getElementById("" + i + j).children[0].style.display ="none";
-                    }
+                    } else
+                        document.getElementById("" + i + j).children[0].style.display = "none";
                 }
             }
         }
@@ -109,32 +110,34 @@
         spielfeldAktualisieren()
 
         document.addEventListener("click", e => {
-            Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
+            
 
-            if (zugphase =="auswahl"){
+            if (zugphase == "auswahl") {
                 for (i = 0; i < spielfeld.length; i++) {
                     for (j = 0; j < spielfeld[i].length; j++) {
-                        if (e.target.parentElement.id == "" + i + j)
+                        if (e.target.id == "" + i + j && spielfeld[i][j] == aktuellerSpieler){
                             möglicheZüge(i, j);
+                        }
                     }
                 }
-                if (Array.from(document.getElementsByClassName("grün")).length > 0){
+                if (Array.from(document.getElementsByClassName("grün")).length > 0) {
                     zugphase = "setzen";
-                    console.log("setzen");
                     gewähltesFeld = e.target.id;
                 }
             } else if (zugphase == "setzen") {
-                console.log("s")
                 let geklicktesFeld = e.target.id;
-                let geklickteZeile = parseInt(geklicktesFeld[0])
-                let geklickteSpalte = parseInt(geklicktesFeld[1])
-                if (spielfeld[geklickteZeile[0], geklickteSpalte[1]] =="") {
+                let geklickteZeile = parseInt(geklicktesFeld[0]);
+                let geklickteSpalte = parseInt(geklicktesFeld[1]);
+                if (document.getElementById(e.target.classList.contains("grün") && geklicktesFeld != gewähltesFeld)) {
                     spielfeld[parseInt(gewähltesFeld[0])][parseInt(gewähltesFeld[1])] = "";
-                    spielfeld[geklickteZeile[0], geklickteSpalte[1]] ="w";
+                    spielfeld[geklickteZeile][geklickteSpalte] = aktuellerSpieler;
                     spielfeldAktualisieren();
+                    aktuellerSpieler = aktuellerSpieler =="w" ? "s": "w";
                 }
+                zugphase ="auswahl";
+                Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
             }
-        })
+        });
 
         function möglicheZüge(i, j) {
             document.getElementById("" + i + j).classList.add("grün");

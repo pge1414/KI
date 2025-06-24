@@ -109,14 +109,41 @@
 
         spielfeldAktualisieren()
 
-        document.addEventListener("click", e => {
+        function endprüfung() {
+            if (spielfeld[0].includes("w"))
+                return "w"
+            if (spielfeld[2].includes("s"))
+                return "s"
+            if(!spielfeld.some(zeile => zeile.includes("w")))
+                return "s"
+            if(!spielfeld.some(zeile => zeile.includes("s")))
+                return "w"
+            for(let i = 0; i < spielfeld.length; i++){
+                for(let j = 0; j < spielfeld[i].length; j++){
+                    if (möglicheZüge(i, j).length > 0){
+                        return null;
+                        console.log(möglicheZüge(i,j).length)
+                    }
+                }
+            }
+            return aktuellerSpieler == "w" ? "s" : "w";
             
+        }
+
+
+
+        document.addEventListener("click", e => {
 
             if (zugphase == "auswahl") {
                 for (i = 0; i < spielfeld.length; i++) {
                     for (j = 0; j < spielfeld[i].length; j++) {
                         if (e.target.id == "" + i + j && spielfeld[i][j] == aktuellerSpieler){
                             möglicheZüge(i, j);
+                            document.getElementById("" + i + j).classList.add("grün");
+                            möglicheFelder.forEach(feld => {
+                                document.getElementById("" + feld[0] + feld[1]).classList.add("grün");
+                            });
+
                         }
                     }
                 }
@@ -128,7 +155,8 @@
                 let geklicktesFeld = e.target.id;
                 let geklickteZeile = parseInt(geklicktesFeld[0]);
                 let geklickteSpalte = parseInt(geklicktesFeld[1]);
-                if (document.getElementById(e.target.classList.contains("grün") && geklicktesFeld != gewähltesFeld)) {
+                console.log(e.target.classList);
+                if (e.target.classList.contains("grün") && geklicktesFeld != gewähltesFeld) {
                     spielfeld[parseInt(gewähltesFeld[0])][parseInt(gewähltesFeld[1])] = "";
                     spielfeld[geklickteZeile][geklickteSpalte] = aktuellerSpieler;
                     spielfeldAktualisieren();
@@ -137,10 +165,11 @@
                 zugphase ="auswahl";
                 Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
             }
+            if (endprüfung() == "w" || endprüfung() == "s")
+                alert(endprüfung())
         });
 
         function möglicheZüge(i, j) {
-            document.getElementById("" + i + j).classList.add("grün");
             farbe = spielfeld[i][j];
             if (farbe == "w") {
                 möglicheFelder = [];
@@ -151,9 +180,7 @@
                 if (j + 1 <= 2 && spielfeld[i - 1][j + 1] == "s")
                     möglicheFelder.push([i - 1, j + 1])
 
-                möglicheFelder.forEach(feld => {
-                    document.getElementById("" + feld[0] + feld[1]).classList.add("grün");
-                });
+            
             } else if (farbe == "s") {
                 möglicheFelder = [];
                 if (j - 1 >= 0 && spielfeld[i + 1][j - 1] == "w")
@@ -162,11 +189,8 @@
                     möglicheFelder.push([i + 1, j]);
                 if (j + 1 <= 2 && spielfeld[i + 1][j + 1] == "w")
                     möglicheFelder.push([i + 1, j + 1])
-
-                möglicheFelder.forEach(feld => {
-                    document.getElementById("" + feld[0] + feld[1]).classList.add("grün");
-                });
             }
+            return möglicheFelder
         }
 
     </script>

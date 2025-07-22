@@ -10,7 +10,7 @@
         body {
             font-family: "Helvetica Neue";
             text-align: center;
-            background-color: hsl(0, 0%, 10%);
+            background-color: hsl(26, 80%, 75%);
         }
         h1 {
             font-size: 5vw;
@@ -87,13 +87,51 @@
         </div>
     </div>
     <script>
-        let spielfeld = [["s", "s", "s"],
-                    ["", "", ""],
-                    ["w", "w", "w"]];
 
-        let zugphase = "auswahl";
-        let gewähltesFeld = null;
-        let aktuellerSpieler = "w";
+    let spielfeld
+    let zugphase
+    let gewähltesFeld
+    let aktuellerSpieler
+    
+    function neustart(){
+            let spielfeld = [["s", "s", "s"],
+                        ["", "", ""],
+                        ["w", "w", "w"]];
+
+            let zugphase = "auswahl";
+            let gewähltesFeld = null;
+            let aktuellerSpieler = "w";
+
+        }
+        neustart();
+
+        const regeln = {}
+
+        function schwarz() {
+            Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
+            if (!Object.keys(regeln).includes(spielfeld)){
+                nachfolgekonfigurationen =[]
+                for(let i = 0; i < spielfeld.length; i++){
+                    for (let j = 0; i < spielfeld[i].length; j++){
+                        if (spielfeld[i][j] == "s"){
+
+                            möglicheZüge(i, j).forEach(möglichesFeld => {
+                                nachfolgeKonfiguration = structuredClone(spielfeld);
+                                nachfolgeKonfiguration[i][j] = "";
+                                nachfolgeKonfiguration[möglichesFeld[0]][möglichesFeld[1]] = "s";
+                                nachfolgeKonfigurationen.push(nachfolgeKonfiguration);
+                            })
+                        }
+                    }
+                }
+                regeln[spielfeld] = nachfolgeKonfiguration;
+
+            }
+            zufälligeNächsteKonfiguration = regeln[spielfeld][Math.floor(Math.random() * regeln[spielfeld].length)]
+            spielfeld = zugälligeNächsteKonfiguration;
+            aktuellerSpieler ="w";
+            spielfeldAktualisieren();
+        }
 
         function spielfeldAktualisieren() {
             for (i = 0; i < spielfeld.length; i++) {
@@ -122,7 +160,7 @@
                 for(let j = 0; j < spielfeld[i].length; j++){
                     if (möglicheZüge(i, j).length > 0){
                         return null;
-                        console.log(möglicheZüge(i,j).length)
+                        // console.log(möglicheZüge(i, j).length)
                     }
                 }
             }
@@ -134,39 +172,47 @@
 
         document.addEventListener("click", e => {
 
-            if (zugphase == "auswahl") {
-                for (i = 0; i < spielfeld.length; i++) {
-                    for (j = 0; j < spielfeld[i].length; j++) {
-                        if (e.target.id == "" + i + j && spielfeld[i][j] == aktuellerSpieler){
-                            möglicheZüge(i, j);
-                            document.getElementById("" + i + j).classList.add("grün");
-                            möglicheFelder.forEach(feld => {
-                                document.getElementById("" + feld[0] + feld[1]).classList.add("grün");
-                            });
+            if (aktuellerSpieler == "w") {
+                if (zugphase == "auswahl") {
 
+                    for (i = 0; i < spielfeld.length; i++) {
+                        for (j = 0; j < spielfeld[i].length; j++) {
+                            if (e.target.id == "" + i + j && spielfeld[i][j] == aktuellerSpieler){
+                                möglicheZüge(i, j);
+                                document.getElementById("" + i + j).classList.add("grün");
+                                möglicheFelder.forEach(feld => {
+                                    document.getElementById("" + feld[0] + feld[1]).classList.add("grün");
+                                });
+
+                            }
                         }
                     }
+                    if (Array.from(document.getElementsByClassName("grün")).length > 0) {
+                        zugphase = "setzen";
+                        gewähltesFeld = e.target.id;
+                    }
+                } else if (zugphase == "setzen") {
+                    let geklicktesFeld = e.target.id;
+                    let geklickteZeile = parseInt(geklicktesFeld[0]);
+                    let geklickteSpalte = parseInt(geklicktesFeld[1]);
+                    console.log(e.target.classList);
+                    if (e.target.classList.contains("grün") && geklicktesFeld != gewähltesFeld) {
+                        spielfeld[parseInt(gewähltesFeld[0])][parseInt(gewähltesFeld[1])] = "";
+                        spielfeld[geklickteZeile][geklickteSpalte] = aktuellerSpieler;
+                        spielfeldAktualisieren();
+                        aktuellerSpieler = aktuellerSpieler =="w" ? "s": "w";
+                        schwarz();
+                        if (endprüfung())
+                            alert(endprüfung())
+                            neustart()
+                        schwarz()
+                    }
+                    zugphase ="auswahl";
+                    Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
                 }
-                if (Array.from(document.getElementsByClassName("grün")).length > 0) {
-                    zugphase = "setzen";
-                    gewähltesFeld = e.target.id;
-                }
-            } else if (zugphase == "setzen") {
-                let geklicktesFeld = e.target.id;
-                let geklickteZeile = parseInt(geklicktesFeld[0]);
-                let geklickteSpalte = parseInt(geklicktesFeld[1]);
-                console.log(e.target.classList);
-                if (e.target.classList.contains("grün") && geklicktesFeld != gewähltesFeld) {
-                    spielfeld[parseInt(gewähltesFeld[0])][parseInt(gewähltesFeld[1])] = "";
-                    spielfeld[geklickteZeile][geklickteSpalte] = aktuellerSpieler;
-                    spielfeldAktualisieren();
-                    aktuellerSpieler = aktuellerSpieler =="w" ? "s": "w";
-                }
-                zugphase ="auswahl";
-                Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
+                if (endprüfung())
+                    alert(endprüfung())
             }
-            if (endprüfung() == "w" || endprüfung() == "s")
-                alert(endprüfung())
         });
 
         function möglicheZüge(i, j) {

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <title>HexaPawn</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue";
+            text-align: center;
+            background-color: hsl(0, 0%, 10%);
+        }
+
+        h1 {
+            font-size: 5vw;
+            color: white;
+        }
+
+        #spiel {
+            display: table;
+            margin: auto;
+            border: 1vw solid black;
+        }
+
+        .table-row {
+            display: table-row;
+        }
+
+        .table-cell {
+            display: table-cell;
+            width: 12vw;
+            height: 12vw;
+            vertical-align: middle;
+        }
+
+        .table-cell img {
+            height: 80%;
+            pointer-events: none;
+        }
+
+        .black {
+            background-color: rgb(68, 27, 27);
+        }
+
+        .white {
+            background-color: wheat;
+        }
+
+        .black.grün {
+            background-color: #00674b;
+        }
+
+        .white.grün {
+            background-color: #ACE1AF;
+        }
+
+        .table-cell-klein {
+            display: table-cell;
+            width: 1.5vw;
+            height: 1.5vw;
+            vertical-align: middle;
+        }
+
+        #lernbaum {
+            width: 40vw;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HexaPawn</h1>
+    <div id="spiel">
+        <div class="table-row">
+            <div id="00" class="table-cell white">
+                <img>
+            </div>
+            <div id="01" class="table-cell black">
+                <img>
+            </div>
+            <div id="02" class="table-cell white">
+                <img>
+            </div>
+        </div>
+        <div class="table-row">
+            <div id="10" class="table-cell black">
+                <img>
+            </div>
+            <div id="11" class="table-cell white">
+                <img>
+            </div>
+            <div id="12" class="table-cell black">
+                <img>
+            </div>
+        </div>
+        <div class="table-row">
+            <div id="20" class="table-cell white">
+                <img>
+            </div>
+            <div id="21" class="table-cell black">
+                <img>
+            </div>
+            <div id="22" class="table-cell white">
+                <img>
+            </div>
+        </div>
+    </div>
+    <div id="lernbaum">
+
+    </div>
+    <script>
+        let spielfeld;
+        let zugphase;
+        let gewähltesFeld;
+        let aktuellerSpieler;
+        let letzterZugSchwarz = null;
+        const lernbaum = document.getElementById("lernbaum");
+
+        function neustart() {
+            spielfeld = [["s", "s", "s"],
+            ["", "", ""],
+            ["w", "w", "w"]];
+
+            zugphase = "auswahl";
+            gewähltesFeld = null;
+            aktuellerSpieler = "w";
+            spielfeldAktualisieren();
+        }
+        neustart();
+
+        const regeln = {};
+
+        function konfigurationenAusgabe(konfigurationen) {
+
+            lernbaum.innerHTML = "";
+
+            for (const [spielfeld, nachfolgeKonfigurationen] of Object.entries(regeln)) {
+
+                ausgabe = "<div style='color: white; display: inline-block; float: left; padding-right: 4vw; margin-right: 2vw; border-right: 1px solid white'>";
+                JSON.parse(spielfeld).forEach(zeile => {
+                    ausgabe += "<div class='table-row'>";
+                    zeile.forEach(eintrag => {
+                        ausgabe += "<div class='table-cell-klein'>";
+                        ausgabe += eintrag != "" ? eintrag : " ";
+                        ausgabe += "</div>";
+                    });
+                    ausgabe += "</div>";
+                });
+                ausgabe += "</div>";
+    
+                //ausgabe += "<div style='display:inline; width: 1vw; height: 15vw; background-color: white'>";
+    
+                nachfolgeKonfigurationen.forEach(konfiguration => {
+                    ausgabe += "<div style='color: white; display: inline; margin-right: 2vw'>";
+                    JSON.parse(konfiguration).forEach(zeile => {
+                        ausgabe += "<div class='table-row'>";
+                        zeile.forEach(eintrag => {
+                            ausgabe += "<div class='table-cell-klein'>";
+                            ausgabe += eintrag != "" ? eintrag : " ";
+                            ausgabe += "</div>";
+                        });
+                        ausgabe += "</div>";
+                    })
+                    ausgabe += "</div>";
+                });
+                ausgabe += "<br>";
+                lernbaum.insertAdjacentHTML("afterbegin", ausgabe);
+            }
+        }
+
+        function schwarz() {
+            Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
+            let spielfeldString = JSON.stringify(spielfeld);
+
+            if (!Object.keys(regeln).includes(spielfeldString)) {
+                nachfolgeKonfigurationen = [];
+                for (let i = 0; i < spielfeld.length; i++) {
+                    for (let j = 0; j < spielfeld[i].length; j++) {
+                        if (spielfeld[i][j] == "s") {
+
+                            möglicheZüge(i, j).forEach(möglichesFeld => {
+                                nachfolgeKonfiguration = structuredClone(spielfeld);
+                                nachfolgeKonfiguration[i][j] = "";
+                                nachfolgeKonfiguration[möglichesFeld[0]][möglichesFeld[1]] = "s";
+                                nachfolgeKonfigurationen.push(JSON.stringify(nachfolgeKonfiguration));
+                            })
+                        }
+                    }
+                }
+                regeln[spielfeldString] = structuredClone(nachfolgeKonfigurationen);
+            } else {
+                console.log("Bereits enthalten!");
+            }
+            konfigurationenAusgabe(regeln[spielfeldString]);
+            if (regeln[spielfeldString].length == 0)
+                alert("Keine Regeln übrig!");
+            zufälligeNächsteKonfiguration = regeln[spielfeldString][Math.floor(Math.random() * regeln[spielfeldString].length)];
+            letzterZugSchwarz = [spielfeldString, zufälligeNächsteKonfiguration];
+            spielfeld = JSON.parse(zufälligeNächsteKonfiguration);
+            aktuellerSpieler = "w";
+            spielfeldAktualisieren();
+        }
+
+        function spielfeldAktualisieren() {
+            Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
+            for (i = 0; i < spielfeld.length; i++) {
+                for (j = 0; j < spielfeld[i].length; j++) {
+                    if (spielfeld[i][j]) {
+                        document.getElementById("" + i + j).children[0].style.display = "inline";
+                        document.getElementById("" + i + j).children[0].src = spielfeld[i][j] + ".png";
+                    } else
+                        document.getElementById("" + i + j).children[0].style.display = "none";
+                }
+            }
+        }
+
+        spielfeldAktualisieren();
+
+        function endeprüfung() {
+            if (spielfeld[0].includes("w"))
+                return "w";
+            if (spielfeld[2].includes("s"))
+                return "s";
+
+            if (!spielfeld.some(zeile => zeile.includes("w")))
+                return "s";
+            if (!spielfeld.some(zeile => zeile.includes("s")))
+                return "w";
+
+            for (let i = 0; i < spielfeld.length; i++) {
+                for (let j = 0; j < spielfeld[i].length; j++) {
+                    if (spielfeld[i][j] == aktuellerSpieler && möglicheZüge(i, j).length > 0) {
+                        return null;
+                    }
+                }
+            }
+            return aktuellerSpieler == "w" ? "s" : "w";
+        }
+
+        document.addEventListener("click", e => {
+            if (aktuellerSpieler == "w") {
+                if (zugphase == "auswahl") {
+                    Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
+                    for (i = 0; i < spielfeld.length; i++) {
+                        for (j = 0; j < spielfeld[i].length; j++) {
+                            if (e.target.id == "" + i + j && spielfeld[i][j] == aktuellerSpieler) {
+                                document.getElementById("" + i + j).classList.add("grün");
+                                möglicheFelder = möglicheZüge(i, j);
+                                möglicheFelder.forEach(feld => {
+                                    document.getElementById("" + feld[0] + feld[1]).classList.add("grün");
+                                })
+                            }
+                        }
+                    }
+                    if (Array.from(document.getElementsByClassName("grün")).length > 0) {
+                        zugphase = "setzen";
+                        gewähltesFeld = e.target.id;
+                    }
+                } else if (zugphase == "setzen") {
+                    let geklicktesFeld = e.target.id;
+                    let geklickteZeile = parseInt(geklicktesFeld[0]);
+                    let geklickteSpalte = parseInt(geklicktesFeld[1]);
+                    if (e.target.classList.contains("grün") && geklicktesFeld != gewähltesFeld) {
+                        spielfeld[parseInt(gewähltesFeld[0])][parseInt(gewähltesFeld[1])] = "";
+                        spielfeld[geklickteZeile][geklickteSpalte] = aktuellerSpieler;
+                        spielfeldAktualisieren()
+                        aktuellerSpieler = aktuellerSpieler == "w" ? "s" : "w";
+
+                        // Der menschliche Spieler ist an der Reihe
+                        if (endeprüfung()) {
+                            vorletztesFeld = letzterZugSchwarz[0];
+                            letztesFeld = letzterZugSchwarz[1];
+                            const index = regeln[vorletztesFeld].indexOf(letztesFeld); // Falsches wird gelöscht
+                            regeln[vorletztesFeld].splice(index, 1);
+                            spielfeldAktualisieren();
+                            setTimeout(neustart, 2000);
+                            return;
+                        }
+
+                        schwarz();
+                    }
+                    Array.from(document.getElementsByClassName("grün")).forEach(el => el.classList.remove("grün"));
+
+                    if (endeprüfung()) {
+                        setTimeout(neustart, 3000);
+                    }
+
+                    zugphase = "auswahl";
+                }
+            }
+        });
+
+        function möglicheZüge(i, j) {
+            if (spielfeld[i][j] != aktuellerSpieler)
+                return [];
+            farbe = spielfeld[i][j];
+            if (farbe == "w") {
+                möglicheFelder = [];
+                if (j - 1 >= 0 && spielfeld[i - 1][j - 1] == "s")
+                    möglicheFelder.push([i - 1, j - 1]);
+                if (spielfeld[i - 1][j] == "")
+                    möglicheFelder.push([i - 1, j]);
+                if (j + 1 <= 2 && spielfeld[i - 1][j + 1] == "s")
+                    möglicheFelder.push([i - 1, j + 1])
+            } else if (farbe == "s") {
+                möglicheFelder = [];
+                if (j - 1 >= 0 && spielfeld[i + 1][j - 1] == "w")
+                    möglicheFelder.push([i + 1, j - 1]);
+                if (spielfeld[i + 1][j] == "")
+                    möglicheFelder.push([i + 1, j]);
+                if (j + 1 <= 2 && spielfeld[i + 1][j + 1] == "w")
+                    möglicheFelder.push([i + 1, j + 1])
+            }
+            return möglicheFelder;
+        }
+
+    </script>
+</body>
+
+</html>

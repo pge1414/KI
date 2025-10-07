@@ -1,4 +1,4 @@
-# import random
+import random
 
 # spielfeld = [["1",2,3,4,5],[1,2,"2",4,5],[1,2,3,4,5],[1,2,3,4,"3"],[1,"4",3,4,5]]
 
@@ -28,6 +28,18 @@
 #             print(i , j)
 liste = []
 for i in range(500):
-    liste.append(i)
+    liste.append(-1)
 
 print(liste)
+
+# print(max(tuple([1,2,3])))
+
+# def platzierung():
+#     pos_passagier = random.choice([244,354,498,106])
+#     ziel = random.choice([244,354,498,106])
+#     if pos_passagier != ziel:
+#         return [pos_passagier, ziel]
+#     else:
+#         return platzierung()
+
+# print(platzierung())

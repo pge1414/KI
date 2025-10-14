@@ -28,7 +28,7 @@ import random
 #             print(i , j)
 liste = []
 for i in range(500):
-    liste.append(-1)
+    liste.append(0)
 
 print(liste)
 

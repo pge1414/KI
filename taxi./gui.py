@@ -1,20 +1,37 @@
-import arcade
+import arcade, random
 
 
 class GameView(arcade.View):
 
-    def __init__(self):
-        super().__init__()
-        # 1. Create the SpriteList
-        self.sprites = arcade.SpriteList()
+    liste = [[100,100],[200,100],[300,100],[400,100],[500,100],[100,200],[200,200],[300,200],[400,200],[500,200],[100,300],[200,300],[300,300],[400,300],[500,300],[100,400],[200,400],[300,400],[400,400],[500,400],[100,500],[200,500],[300,500],[400,500],[500,500]]
+    sprites = arcade.SpriteList()
 
-        # 2. Create & append your Sprite instance to the SpriteList
-        self.car = arcade.Sprite("auto.png", 0.1)  # Sprite with the default texture
-        self.car.position = self.center  # center sprite on screen
-        self.sprites.append(self.car)  # Append the instance to the SpriteList
-        self.grid = arcade.Sprite("grid.png", 1)
-        self.grid.position = (290,240)
-        self.sprites.append(self.grid)
+    def move(x : int, liste : list, sprites):
+        car = arcade.Sprite("auto.png", 0.1)
+        car.position = (liste[x][0], liste[x][1])
+        sprites.append(car)
+    
+    def passengerpos(sprites, liste):
+        x = random.randint(0,24)
+        block = arcade.Sprite("omma.png", 0.05)
+        block.position = (liste[x][0], liste[x][1])
+        sprites.append(block)
+
+    def blockpositioning(sprites, liste):
+        x = random.randint(0,24)
+        block = arcade.Sprite("block.png", 0.3)
+        block.position = (liste[x][0], liste[x][1])
+        sprites.append(block)
+    
+    # 2. Create & append your Sprite instance to the SpriteList
+    move(12, liste, sprites) # center sprite on screen
+    passengerpos(sprites,liste)
+    blockpositioning(sprites, liste)
+    blockpositioning(sprites, liste)
+    blockpositioning(sprites, liste)
+    grid = arcade.Sprite("grid.png", 1)
+    grid.position = (290,240)
+    sprites.append(grid)
 
     def on_draw(self):
         # 3. Clear the screen
@@ -22,6 +39,10 @@ class GameView(arcade.View):
 
         # 4. Call draw() on the SpriteList inside an on_draw() method
         self.sprites.draw()
+
+
+
+    
 
 
 def main():
@@ -38,7 +59,4 @@ def main():
     # Start the arcade game loop
     arcade.run()
 
-
-if __name__ == "__main__":
-    main()
 main()

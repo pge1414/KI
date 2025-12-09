@@ -27,14 +27,11 @@ def q_lernen(umgeb, nr=20000, alpha=0.7, gamma=0.95,
             n_status, bel, terminiert, gekürzt, _ = umgeb.step(akt)
             fertig = terminiert or gekürzt
 
-            # Q‑Update
             alt = Q[status, akt]
             Q[status, akt] = alt + alpha * (bel + gamma * np.max(Q[n_status]) - alt)
 
             status = n_status
             bel_insg += bel
-
-        # Epsilon decay
         if y > min:
             y -= verfall
 

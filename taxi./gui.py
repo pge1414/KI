@@ -2,61 +2,73 @@ import arcade, random
 
 
 class GameView(arcade.View):
+    def __init__(self):
+        super().__init__()
+        # grid of possible positions (x,y)
+        self.liste = [[100,100],[200,100],[300,100],[400,100],[500,100],[100,200],[200,200],[300,200],[400,200],[500,200],[100,300],[200,300],[300,300],[400,300],[500,300],[100,400],[200,400],[300,400],[400,400],[500,400],[100,500],[200,500],[300,500],[400,500],[500,500]]
+        # a smaller set of special positions
+        self.liste_pos = [[100,100],[200,300],[500,500],[200,200]]
 
-    liste = [[100,100],[200,100],[300,100],[400,100],[500,100],[100,200],[200,200],[300,200],[400,200],[500,200],[100,300],[200,300],[300,300],[400,300],[500,300],[100,400],[200,400],[300,400],[400,400],[500,400],[100,500],[200,500],[300,500],[400,500],[500,500]]
-    sprites = arcade.SpriteList()
+        # sprite container
+        self.sprites = arcade.SpriteList()
 
-    def move(x : int, liste : list, sprites):
-        car = arcade.Sprite("auto.png", 0.1)
-        car.position = (liste[x][0], liste[x][1])
-        sprites.append(car)
-    
-    def passengerpos(sprites, liste):
-        x = random.randint(0,24)
-        block = arcade.Sprite("omma.png", 0.05)
-        block.position = (liste[x][0], liste[x][1])
-        sprites.append(block)
+        # add background grid as image sprite
+        self.grid = arcade.Sprite("gitter.png", 0.4)
+        self.grid.position = (300,300)
+        self.sprites.append(self.grid)
 
-    def blockpositioning(sprites, liste):
-        x = random.randint(0,24)
-        block = arcade.Sprite("block.png", 0.3)
-        block.position = (liste[x][0], liste[x][1])
-        sprites.append(block)
-    
-    # 2. Create & append your Sprite instance to the SpriteList
-    move(12, liste, sprites) # center sprite on screen
-    passengerpos(sprites,liste)
-    blockpositioning(sprites, liste)
-    blockpositioning(sprites, liste)
-    blockpositioning(sprites, liste)
-    grid = arcade.Sprite("grid.png", 1)
-    grid.position = (290,240)
-    sprites.append(grid)
+        # placeholders
+        self.car_sprite = None
+        self.other_sprites = []
+
+    def setup(self):
+        """Create sprites and schedule non-blocking moves."""
+        # helper to create and append sprite using image filenames
+        def add_sprite(filename, scale, pos, placeholder_color=arcade.color.RED):
+            # try to create sprite from image; fall back to colored box if missing
+            try:
+                spr = arcade.Sprite(filename, scale)
+            except Exception:
+                size = max(8, int(32 * (scale / 0.05)))
+                spr = arcade.SpriteSolidColor(size, size, placeholder_color)
+            spr.center_x, spr.center_y = pos
+            spr.alpha = 255
+            self.sprites.append(spr)
+            self.other_sprites.append(spr)
+            return spr
+
+        # place car in the centre index (12)
+        try:
+            self.car_sprite = arcade.Sprite("auto.png", 0.06)
+        except Exception:
+            self.car_sprite = arcade.SpriteSolidColor(48, 24, arcade.color.BLUE)
+        self.car_sprite.center_x, self.car_sprite.center_y = self.liste[12]
+        self.sprites.append(self.car_sprite)
+
+        # choose 4 unique positions from liste_pos
+        positions = random.sample(self.liste_pos, 4)
+
+        passenger = add_sprite("omma.png", 0.05, positions[0], placeholder_color=arcade.color.YELLOW)
+        block1 = add_sprite("block.png", 0.3, positions[1], placeholder_color=arcade.color.DARK_BROWN)
+        block2 = add_sprite("block.png", 0.3, positions[2], placeholder_color=arcade.color.DARK_BROWN)
+        ziel = add_sprite("bücher.png", 0.05, positions[3], placeholder_color=arcade.color.GREEN)
+
+    def on_show(self):
+        # Called when this view is shown; initialize sprites here
+        self.setup()
 
     def on_draw(self):
-        # 3. Clear the screen
+        # Clear the screen and draw all sprites
         self.clear()
-
-        # 4. Call draw() on the SpriteList inside an on_draw() method
         self.sprites.draw()
 
 
-
-    
-
-
 def main():
-    """ Main function """
-    # Create a window class. This is what actually shows up on screen
-    window = arcade.Window(600, 600, "Minimal SPrite Example")
-
-    # Create and setup the GameView
+    # Create and show the game window and view
+    window = arcade.Window(600, 600, "Minimal Sprite Example")
     game = GameView()
-
-    # Show GameView on screen
     window.show_view(game)
-
-    # Start the arcade game loop
     arcade.run()
 
-main()
+if __name__ == "__main__":
+    main()

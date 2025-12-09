@@ -62,13 +62,13 @@ if __name__ == "__main__":
     env = gym.make("Taxi-v3", render_mode="ansi")
     Q, rewards = q_lernen(env,nr=25000,alpha=0.7,gamma=0.95,start=1.0,min=0.05,verfall=0.0005)
 
-    # Plot Reward‑Progress über Episoden
+    
     plt.plot(rewards)
     plt.xlabel("VersuchNr")
     plt.ylabel("Belohnung")
     plt.title("Q‑Learning: Belohnung pro Nr")
     plt.show()
 
-    # Test: eine Episode mit „Greedy“-Policy
+  
     bel_insg, steps = run_episode(env, Q, g=True)
     print(f"Test‑Episode beendet: Belohnung = {bel_insg}, Schritte = {steps}")

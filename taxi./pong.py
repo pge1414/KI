@@ -1,4 +1,5 @@
 import arcade
+import arcade.gui
 import random
 
 WIDTH = 800
@@ -13,14 +14,68 @@ BALL_SPEED_INCREASE = 1.05
 FONT_SIZE = 36
 MAX_BALL_SPEED = 3500
 
-class PongWindow0(arcade.Window):
-    def __init__(self, width = 1280, height = 720, title = "Arcade Window", fullscreen = False, resizable = False, update_rate = 1 / 60, antialiasing = True, gl_version = ..., screen = None, style = pyglet.window.Window.WINDOW_STYLE_DEFAULT, visible = True, vsync = False, gc_mode = "context_gc", center_window = False, samples = 4, enable_polling = True, gl_api = "opengl", draw_rate = 1 / 60, fixed_rate = 1 / 60, fixed_frame_cap = None):
-        super().__init__(width, height, title, fullscreen, resizable, update_rate, antialiasing, gl_version, screen, style, visible, vsync, gc_mode, center_window, samples, enable_polling, gl_api, draw_rate, fixed_rate, fixed_frame_cap)
-
-        self 
+class QuitButton(arcade.gui.UIFlatButton):
+    def on_click(self, event: arcade.gui.UIOnClickEvent):
+        arcade.exit()
 
 
-class PongWindow1(arcade.Window):
+class PongWindow0(arcade.Scene):
+    def __init__(self):
+        super().__init__(800, 600, "UIFlatButton Example", resizable=True)
+
+        # --- Required for all code that uses UI element,
+        # a UIManager to handle the UI.
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
+
+        # Set background color
+        arcade.set_background_color(arcade.color.DARK_BLUE_GRAY)
+
+        # Create a vertical BoxGroup to align buttons
+        self.v_box = arcade.gui.UIBoxLayout()
+
+        # Create the buttons
+        start_button = arcade.gui.UIFlatButton(text="Start Game", width=200)
+        self.v_box.add(start_button)
+        # spacer statt with_space_around (Kompatibilität)
+        self.v_box.add(arcade.gui.UIWidget(height=20))
+
+        settings_button = arcade.gui.UIFlatButton(text="Settings", width=200)
+        self.v_box.add(settings_button)
+        self.v_box.add(arcade.gui.UIWidget(height=20))
+
+        # Again, method 1. Use a child class to handle events.
+        quit_button = QuitButton(text="Quit", width=200)
+        self.v_box.add(quit_button)
+
+        # --- Method 2 for handling click events,
+        # assign self.on_click_start as callback
+        start_button.on_click = self.on_click_start
+
+        # --- Method 3 for handling click events,
+        # use a decorator to handle on_click events
+        @settings_button.event("on_click")
+        def on_click_settings(event):
+            print("Settings:", event)
+
+        # Create a widget to hold the v_box widget, that will center the buttons
+        self.manager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x",
+                anchor_y="center_y",
+                child=self.v_box)
+        )
+
+    def on_click_start(self, event):
+        print("Start:", event)
+        self.window.change_scene(PongWindow1())
+
+    def on_draw(self):
+        self.clear()
+        self.manager.draw()
+
+
+class PongWindow1(arcade.Scene):
     def __init__(self):
         super().__init__(WIDTH, HEIGHT, "Pong / Spieler vs Bot")
         arcade.set_background_color(arcade.color.DARK_CORAL)
@@ -72,8 +127,8 @@ class PongWindow1(arcade.Window):
         # Use clear() in on_draw instead of arcade.start_render()
         self.clear()
         # draw center line
-        arcade.draw_line(WIDTH // 2, 0, WIDTH // 2, HEIGHT, arcade.color.WHITE)
-        arcade.draw_line(HEIGHT // 2, 0, WIDTH // 2, HEIGHT, arcade.color.WHITE)
+        arcade.draw_line(WIDTH // 2, 0, WIDTH // 2, HEIGHT, arcade.color.WHITE, line_width=5)
+
 
         # draw all sprites via SpriteList
         self.sprites.draw()
@@ -161,8 +216,25 @@ class PongWindow1(arcade.Window):
         if key in (arcade.key.W, arcade.key.S, arcade.key.UP, arcade.key.DOWN):
             self.player_velocity = 0
 
+
+class MyGame(arcade.Window):
+    def __init__(self, width, height, title):
+        super().__init__(width, height, title)
+        self.current_scene = PongWindow0(self) # Startet mit der Menü-Szene
+
+    def change_scene(self, new_scene):
+        self.current_scene = new_scene
+
+    def on_draw(self):
+        # Zeichnet die aktuelle Szene
+        self.current_scene.on_draw()
+
+    def on_key_press(self, key, modifiers):
+        # Leitet Tastendrücke an die aktuelle Szene weiter
+        self.current_scene.on_key_press(key, modifiers)
+
 def main():
-    window = PongWindow1()
+    window = MyGame(800, 600, "Arcade Szenenwechsel")
     arcade.run()
 if __name__ == "__main__":
     main()

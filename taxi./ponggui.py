@@ -8,12 +8,12 @@ import arcade.gui
 
 # --- Method 1 for handling click events,
 # Create a child class.
-class QuitButton(arcade.gui.UIFlatButton):              
+class QuitButton(arcade.gui.UIFlatButton):
     def on_click(self, event: arcade.gui.UIOnClickEvent):
         arcade.exit()
 
 
-class MWindow(arcade.Window):
+class MyWindow(arcade.Window):
     def __init__(self):
         super().__init__(800, 600, "UIFlatButton Example", resizable=True)
 
@@ -31,9 +31,12 @@ class MWindow(arcade.Window):
         # Create the buttons
         start_button = arcade.gui.UIFlatButton(text="Start Game", width=200)
         self.v_box.add(start_button)
+        # spacer statt with_space_around (Kompatibilität)
+        self.v_box.add(arcade.gui.UIWidget(height=20))
 
         settings_button = arcade.gui.UIFlatButton(text="Settings", width=200)
         self.v_box.add(settings_button)
+        self.v_box.add(arcade.gui.UIWidget(height=20))
 
         # Again, method 1. Use a child class to handle events.
         quit_button = QuitButton(text="Quit", width=200)
@@ -65,10 +68,5 @@ class MWindow(arcade.Window):
         self.manager.draw()
 
 
-def main():
-    window = MWindow()
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()
+window = MyWindow()
+arcade.run()

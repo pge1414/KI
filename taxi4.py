@@ -4,8 +4,7 @@ import random
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-def q_lernen(umgeb, nr=20000, alpha=0.7, gamma=0.95, 
-                     start=1.0, min=0.05, verfall=0.0005):
+def q_lernen(umgeb, nr=20000, alpha=0.7, gamma=0.95, start=1.0, min=0.05, verfall=0.0005):
     n_states = umgeb.observation_space.n
     n_actions = umgeb.action_space.n
     Q = np.zeros((n_states, n_actions))
@@ -60,7 +59,7 @@ def run_episode(umgeb, Q, g=True):
 
 if __name__ == "__main__":
     env = gym.make("Taxi-v3", render_mode="ansi")
-    Q, rewards = q_lernen(env,nr=25000,alpha=0.7,gamma=0.95,start=1.0,min=0.05,verfall=0.0005)
+    Q, rewards = q_lernen(env,nr=10000,alpha=0.7,gamma=0.95,start=1.0,min=0.05,verfall=0.0005)
 
     
     plt.plot(rewards)

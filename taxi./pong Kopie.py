@@ -15,7 +15,7 @@ FONT_SIZE = 36
 class PongWindow(arcade.Window):
     def __init__(self):
         super().__init__(WIDTH, HEIGHT, "Pong — Spieler vs Bot")
-        arcade.set_background_color(arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.ORIOLES_ORANGE)
 
         # Player paddle (left)
         self.player = arcade.SpriteSolidColor(PADDLE_WIDTH, PADDLE_HEIGHT, arcade.color.WHITE)
@@ -29,7 +29,7 @@ class PongWindow(arcade.Window):
         self.bot.center_y = HEIGHT // 2
 
         # Ball
-        self.ball = arcade.SpriteSolidColor(BALL_SIZE, BALL_SIZE, arcade.color.WHITE)
+        self.ball = arcade.SpriteSolidColor(BALL_SIZE, BALL_SIZE, arcade.color.YELLOW)
         self.reset_ball()
 
         # Scores
@@ -54,7 +54,7 @@ class PongWindow(arcade.Window):
         self.ball_dy = speed * angle
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_line(WIDTH // 2, 0, WIDTH // 2, HEIGHT, arcade.color.DARK_GRAY)
+        arcade.draw_line(WIDTH // 2, 0, WIDTH // 2, HEIGHT, arcade.color.WHITE, line_width=5)
         self.player.draw()
         self.bot.draw()
         self.ball.draw()

@@ -68,7 +68,7 @@ class PongWindow0(arcade.Scene):
 
     def on_click_start(self, event):
         print("Start:", event)
-        self.window.change_scene(PongWindow1())
+        self.window.change_scene(PongWindow1(self))
 
     def on_draw(self):
         self.clear()
@@ -220,7 +220,7 @@ class PongWindow1(arcade.Scene):
 class MyGame(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
-        self.current_scene = PongWindow0(self) # Startet mit der Menü-Szene
+        self.scene = arcade.PongWindow0() # Startet mit der Menü-Szene
 
     def change_scene(self, new_scene):
         self.current_scene = new_scene

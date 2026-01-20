@@ -13,7 +13,7 @@ BALL_SPEED_INCREASE = 1.05
 FONT_SIZE = 36
 
 class qlearning():
-    table = [[]] # Q-Tabelle initialisieren
+    table = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]] # Q-Tabelle initialisieren
     def qlearning(self, currentstate, action, reward, nextstate, alpha, gamma):
         old_value = self.table[currentstate][action]
         next_max = max(self.table[nextstate])
@@ -28,6 +28,7 @@ class PongWindow(arcade.Window):
 
         # Player paddle (left)
         self.player = arcade.SpriteSolidColor(PADDLE_WIDTH, PADDLE_HEIGHT, arcade.color.WHITE)
+        self.bc = "ORIOLES_ORANGE"
         self.player.center_x = 40
         self.player.center_y = HEIGHT // 2
         self.player_velocity = 0
@@ -126,6 +127,16 @@ class PongWindow(arcade.Window):
             self.player_velocity = -PADDLE_SPEED
         elif key == arcade.key.SPACE:
             self.paused = not self.paused
+        elif key == arcade.key.C:
+            if self.bc == "ORIOLES_ORANGE":
+                arcade.set_background_color(arcade.color.BUD_GREEN)
+                self.bc = "ARMY_GREEN"
+            elif self.bc == "ARMY_GREEN":
+                arcade.set_background_color(arcade.color.BLUE_GRAY)
+                self.bc = "DARK_SLATE_GRAY"
+            elif self.bc == "DARK_SLATE_GRAY":
+                arcade.set_background_color(arcade.color.ORIOLES_ORANGE)
+                self.bc = "ORIOLES_ORANGE"
 
     def on_key_release(self, key, modifiers):
         if key in (arcade.key.W, arcade.key.S, arcade.key.UP, arcade.key.DOWN):

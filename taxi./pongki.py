@@ -13,20 +13,65 @@ BALL_SPEED_INCREASE = 1.05
 FONT_SIZE = 36
 
 class qlearning():
-    table = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]] # Q-Tabelle initialisieren
+    table = [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]] # Q-Tabelle initialisieren
     def qlearning(self, currentstate, action, reward, nextstate, alpha, gamma):
         old_value = self.table[currentstate][action]
         next_max = max(self.table[nextstate])
         new_value = (1 - alpha) * old_value + alpha * (reward + gamma * next_max)
         self.table[currentstate][action] = new_value
+
+    def pongki():
+        pass
         
 
 class PongWindow(arcade.Window):
     def __init__(self):
         super().__init__(WIDTH, HEIGHT, "Pong — Spieler vs Bot")
         arcade.set_background_color(arcade.color.ORIOLES_ORANGE)
+        self.liste_posi = arcade.SpriteList()
+        self.pos1 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos1.center_x = WIDTH // 2
+        self.pos1.center_y = 37.5
+        self.pos1.alpha = 0
+        self.liste_posi.append(self.pos1)
+        self.pos2 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos2.center_x = WIDTH // 2
+        self.pos2.center_y = 3*37.5
+        self.pos2.alpha = 0
+        self.liste_posi.append(self.pos2)
+        self.pos3 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos3.center_x = WIDTH // 2
+        self.pos3.center_y = 5*37.5
+        self.pos3.alpha = 0
+        self.liste_posi.append(self.pos3)
+        self.pos4 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos4.center_x = WIDTH // 2
+        self.pos4.center_y = 7*37.5
+        self.pos4.alpha = 0
+        self.liste_posi.append(self.pos4)
+        self.pos5 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos5.center_x = WIDTH // 2
+        self.pos5.center_y = 9*37.5
+        self.pos5.alpha = 0
+        self.liste_posi.append(self.pos5)
+        self.pos6 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos6.center_x = WIDTH // 2
+        self.pos6.center_y = 11*37.5
+        self.pos6.alpha = 0
+        self.liste_posi.append(self.pos6)
+        self.pos7 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos7.center_x = WIDTH // 2
+        self.pos7.center_y = 13*37.5
+        self.pos7.alpha = 0
+        self.liste_posi.append(self.pos7)
+        self.pos8 = arcade.SpriteSolidColor(WIDTH, 75, arcade.color.WHITE)
+        self.pos8.center_x = WIDTH // 2
+        self.pos8.center_y = 15*37.5
+        self.pos8.alpha = 0
+        self.liste_posi.append(self.pos8)
 
-        # Player paddle (left)
+
+        
         self.player = arcade.SpriteSolidColor(PADDLE_WIDTH, PADDLE_HEIGHT, arcade.color.WHITE)
         self.bc = "ORIOLES_ORANGE"
         self.player.center_x = 40
@@ -49,6 +94,8 @@ class PongWindow(arcade.Window):
         # State
         self.paused = False
 
+        
+
     def reset_ball(self, serve_to_player=None):
         # center
         self.ball.center_x = WIDTH // 2
@@ -64,15 +111,18 @@ class PongWindow(arcade.Window):
         self.ball_dy = speed * angle
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_line(WIDTH // 2, 0, WIDTH // 2, HEIGHT, arcade.color.WHITE, line_width=5)
+        arcade.draw_line(WIDTH // 2, 0, WIDTH // 2, HEIGHT, arcade.color.BEIGE, line_width=6)
         self.player.draw()
         self.bot.draw()
         self.ball.draw()
+        self.liste_posi.draw()
+        arcade.draw_rectangle_outline(WIDTH //2, HEIGHT //4, 400, 300, arcade.color.WHITE, border_width=4)
+        arcade.draw_rectangle_outline(WIDTH //2, HEIGHT * (3/4), 400, 300, arcade.color.WHITE, border_width=4)
 
 
     def on_update(self, delta_time):
-        if self.paused:
-            return
+        # if self.paused:
+        #     return
 
         # Update player paddle position
         self.player.center_y += self.player_velocity * delta_time
@@ -81,6 +131,23 @@ class PongWindow(arcade.Window):
             self.player.top = HEIGHT
         if self.player.bottom < 0:
             self.player.bottom = 0
+        
+        if arcade.check_for_collision(self.ball, self.pos1):
+            print("Kollision pos1")
+        if arcade.check_for_collision(self.ball, self.pos2):
+            print("Kollision pos2")
+        if arcade.check_for_collision(self.ball, self.pos3):
+            print("Kollision pos3")
+        if arcade.check_for_collision(self.ball, self.pos4):
+            print("Kollision pos4")
+        if arcade.check_for_collision(self.ball, self.pos5):
+            print("Kollision pos5")
+        if arcade.check_for_collision(self.ball, self.pos6):
+            print("Kollision pos6")
+        if arcade.check_for_collision(self.ball, self.pos7):
+            print("Kollision pos7")
+        if arcade.check_for_collision(self.ball, self.pos8):
+            print("Kollision pos8")
 
         # Update bot paddle position
         if self.ball.center_y > self.bot.center_y:
